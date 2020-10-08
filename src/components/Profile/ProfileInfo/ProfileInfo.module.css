@@ -1,0 +1,16 @@
+.profileInfo {
+    background-color: salmon;
+}
+.mainInfo {
+    padding: 10px;
+}
+.mainInfo > img {
+    width: 100%;
+}
+.description {
+    padding: 10px;
+}
+.description > img {
+    width: 150px;
+}
+
