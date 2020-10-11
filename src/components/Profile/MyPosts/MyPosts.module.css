@@ -1,10 +1,10 @@
 .posts {
-    background-color: brown;
+    background-color: rgb(245, 186, 135);
     margin-top: 10px;
 }
 .myPosts {
     padding: 10px;
 }
 .createContent {
-    background-color: turquoise;
+    background-color: lightsalmon;
 }

@@ -13,8 +13,18 @@ function App(props) {
                 <Header/>
                 <Sidebar/>
                 <div className='app-wrapper-content'>
-                    <Route path='/profile' render={() => <Profile profilePage={props.state.profilePage}/>}/>
-                    <Route path='/dialogs' render={() => <Dialogs dialogsPage={props.state.dialogsPage}/>}/>
+                    <Route path='/profile' render={() =>
+                        <Profile
+                            profilePage={props.state.profilePage}
+                            dispatch={props.dispatch}
+                        />
+                    }/>
+                    <Route path='/dialogs' render={() =>
+                        <Dialogs
+                            dialogsPage={props.state.dialogsPage}
+                            dispatch={props.dispatch}
+                        />
+                    }/>
                 </div>
             </div>
         </Router>
