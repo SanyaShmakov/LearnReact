@@ -14,33 +14,31 @@ function Dialogs(props) {
     }
 
     return (
-        <div>
-            <div className={classes.dialogs}>
-                <div className={classes.dialogItems}>
-                    {props.dialogsPage.dialogs.map(item =>
-                        <DialogItem
-                            key={item.id}
-                            name={item.name}
-                            id={item.id}
-                        />
-                    )}
+        <div className={classes.dialogs}>
+            <div className={classes.dialogItems}>
+                {props.dialogsPage.dialogs.map(item =>
+                    <DialogItem
+                        key={item.id}
+                        name={item.name}
+                        id={item.id}
+                    />
+                )}
+            </div>
+            <div className={classes.messages}>
+                {props.dialogsPage.messages.map(item =>
+                    <Message
+                        key={item.id}
+                        message={item.message}
+                        id={item.id}
+                    />
+                )}
+                <div>
+                    <textarea
+                        onChange={onMessageChange}
+                        value={props.dialogsPage.newMessageText}
+                    />
                 </div>
-                <div className={classes.messages}>
-                    {props.dialogsPage.messages.map(item =>
-                        <Message
-                            key={item.id}
-                            message={item.message}
-                            id={item.id}
-                        />
-                    )}
-                    <div>
-                        <textarea
-                            onChange={onMessageChange}
-                            value={props.dialogsPage.newMessageText}
-                        />
-                    </div>
-                    <button onClick={addMessage}>Добавить сообщение</button>
-                </div>
+                <button onClick={addMessage}>Добавить сообщение</button>
             </div>
         </div>
     );
