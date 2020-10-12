@@ -5,21 +5,18 @@ import "./index.css"
 import App from "./App";
 import store from "./Redux/redux-store";
 
-function renderTree(state) {
+function renderTree() {
     ReactDOM.render(
         <React.StrictMode>
             <App
-                state={state}
-                dispatch={store.dispatch.bind(store)}
+                store={store}
             />
         </React.StrictMode>,
         document.getElementById('root')
     );
 }
-renderTree(store.getState());
-store.subscribe(() => {
-    renderTree(store.getState());
-});
+renderTree();
+store.subscribe(renderTree);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

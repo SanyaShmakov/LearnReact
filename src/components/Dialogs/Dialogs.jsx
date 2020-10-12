@@ -2,21 +2,21 @@ import React from "react";
 import classes from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {addMessageActionCreator, updateNewMessageTextActionCreator} from "../../Redux/dialogsReducer";
 
 function Dialogs(props) {
-    function addMessage() {
-        props.dispatch(addMessageActionCreator());
+
+    function onAddMessage() {
+        props.onAddMessage();
     }
 
-    function onMessageChange(e) {
-        props.dispatch(updateNewMessageTextActionCreator(e.target.value))
+    function onChangeMessage(e) {
+        props.onChangeMessage(e.target.value)
     }
 
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogItems}>
-                {props.dialogsPage.dialogs.map(item =>
+                {props.dialogs.map(item =>
                     <DialogItem
                         key={item.id}
                         name={item.name}
@@ -25,7 +25,7 @@ function Dialogs(props) {
                 )}
             </div>
             <div className={classes.messages}>
-                {props.dialogsPage.messages.map(item =>
+                {props.messages.map(item =>
                     <Message
                         key={item.id}
                         message={item.message}
@@ -34,11 +34,11 @@ function Dialogs(props) {
                 )}
                 <div>
                     <textarea
-                        onChange={onMessageChange}
-                        value={props.dialogsPage.newMessageText}
+                        onChange={onChangeMessage}
+                        value={props.newMessageText}
                     />
                 </div>
-                <button onClick={addMessage}>Добавить сообщение</button>
+                <button onClick={onAddMessage}>Добавить сообщение</button>
             </div>
         </div>
     );

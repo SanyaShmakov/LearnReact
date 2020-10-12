@@ -1,15 +1,14 @@
 import React from "react";
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../Redux/profileReducer";
 
 function MyPosts(props) {
-    function addPost() {
-        props.dispatch(addPostActionCreator());
+    function onAddPost() {
+        props.addPost();
     }
 
-    function onPostChange(e) {
-        props.dispatch(updateNewPostTextActionCreator(e.target.value));
+    function onChangePost(e) {
+        props.changePost(e.target.value)
     }
 
     return (
@@ -18,11 +17,11 @@ function MyPosts(props) {
             <div className={classes.createContent}>
                 <div>
                     <textarea
-                        onChange={onPostChange}
+                        onChange={onChangePost}
                         value={props.newPostText}
                     />
                 </div>
-                <button onClick={addPost}>Add post</button>
+                <button onClick={onAddPost}>Add post</button>
             </div>
             <div className={classes.posts}>
                 {props.posts.map(item =>
