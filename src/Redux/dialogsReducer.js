@@ -24,18 +24,21 @@ function dialogsReducer(state = initialState, action) {
                 Id: 5,
                 message: state.newMessageText,
             }
-            state.messages.push(newMessage);
-            state.newMessageText = '';
-            break;
+            return {
+                ...state,
+                messages: [...state.messages, newMessage],
+                newMessageText: '',
+            }
         }
         case UPDATE_NEW_MESSAGE_TEXT: {
-            state.newMessageText = action.newText;
-            break;
+            return {
+                ...state,
+                newMessageText: action.newText,
+            }
         }
         default:
-            break;
+            return state;
     }
-    return state;
 }
 
 export function addMessageActionCreator() {

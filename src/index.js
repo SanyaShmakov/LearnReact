@@ -4,19 +4,16 @@ import * as serviceWorker from './serviceWorker';
 import "./index.css"
 import App from "./App";
 import store from "./Redux/redux-store";
+import {Provider} from "react-redux";
 
-function renderTree() {
-    ReactDOM.render(
-        <React.StrictMode>
-            <App
-                store={store}
-            />
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-}
-renderTree();
-store.subscribe(renderTree);
+ReactDOM.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

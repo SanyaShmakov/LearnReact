@@ -4,11 +4,11 @@ import Post from "./Post/Post";
 
 function MyPosts(props) {
     function onAddPost() {
-        props.addPost();
+        props.onAddPost();
     }
 
     function onChangePost(e) {
-        props.changePost(e.target.value)
+        props.onChangePost(e.target.value)
     }
 
     return (
@@ -18,13 +18,13 @@ function MyPosts(props) {
                 <div>
                     <textarea
                         onChange={onChangePost}
-                        value={props.newPostText}
+                        value={props.profilePage.newPostText}
                     />
                 </div>
                 <button onClick={onAddPost}>Add post</button>
             </div>
             <div className={classes.posts}>
-                {props.posts.map(item =>
+                {props.profilePage.posts.map(item =>
                     <Post
                         key={item.id}
                         message={item.message}
