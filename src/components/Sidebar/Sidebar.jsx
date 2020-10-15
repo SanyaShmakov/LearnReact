@@ -20,6 +20,9 @@ function Sidebar() {
             <div className={classes.item}>
                 <NavLink to='/settings' activeClassName={classes.active}>Settings</NavLink>
             </div>
+            <div className={classes.item}>
+                <NavLink to='/users' activeClassName={classes.active}>Users</NavLink>
+            </div>
         </nav>
     );
 }

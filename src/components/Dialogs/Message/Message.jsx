@@ -3,7 +3,9 @@ import classes from "./Message.module.css";
 
 function Message(props) {
     return (
-        <div className={classes.message}>{props.message}</div>
+        <div className={classes.message} key={props.id}>
+            {props.message}
+        </div>
     )
 }
 
