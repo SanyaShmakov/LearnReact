@@ -1,7 +1,11 @@
 import React from "react";
 import classes from "./ProfileInfo.module.css"
+import Loader from "../../Loader/Loader";
 
-function ProfileInfo() {
+function ProfileInfo(props) {
+    if (!props.profile) {
+        return <Loader/>
+    }
     return (
         <div className={classes.profileInfo}>
             <div className={classes.mainInfo}>
@@ -12,7 +16,7 @@ function ProfileInfo() {
             </div>
             <div className={classes.description}>
                 <img
-                    src="https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg"
+                    src={props.profile.avatar}
                     alt=""
                 />
             </div>

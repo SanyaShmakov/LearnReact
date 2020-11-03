@@ -1,24 +1,16 @@
 import React from "react";
 import classes from './Users.module.css'
 import userImage from '../../assets/images/user.png'
+import {NavLink} from "react-router-dom";
+import * as axios from "axios";
 
 function Users(props) {
-
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
 
     let pages = [];
 
-    if (pagesCount > 10) {
-        pages.push(1);
-        pages.push(2);
-        pages.push(3);
-        pages.push(pagesCount - 2);
-        pages.push(pagesCount - 1);
-        pages.push(pagesCount);
-    } else {
-        for (let i = 1; i <= pagesCount; i++) {
-            pages.push(i);
-        }
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i);
     }
 
     return (
@@ -45,30 +37,42 @@ function Users(props) {
                     <div key={user.id}>
                         <span>
                             <div>
-                                <img
-                                    className={classes.avatar}
-                                    src={user.photos.small !== null ? user.photos.small : userImage}
-                                    alt=""
-                                />
+                                <NavLink to={`/profile/` + user.id}>
+                                    <img
+                                        className={classes.avatar}
+                                        src={user.avatar !== null ? user.avatar : userImage}
+                                        alt=""
+                                    />
+                                </NavLink>
                             </div>
                             <div>
                                 {user.followed
                                     ? <button onClick={() => {
-                                        props.unFollow(user.id)
-                                    }}>Unfollow</button>
+                                        axios.delete(`https://localhost:5001/api/users/follow/${user.id}`,
+                                            {withCredentials: true}).then(response => {
+                                            if (response.data.result) {
+                                                props.unFollow(user.id);
+                                            }
+                                        });
+                                    }}>Отписаться</button>
                                     : <button onClick={() => {
-                                        props.follow(user.id)
-                                    }}>Follow</button>
+                                        axios.post(`https://localhost:5001/api/users/follow/${user.id}`, {},
+                                            {withCredentials: true}).then(response => {
+                                            if (response.data.result) {
+                                                props.follow(user.id);
+                                            }
+                                        });
+                                    }}>Добавить в друзья</button>
                                 }
                             </div>
                         </span>
                         <span>
                             <span>
                                 <div>
-                                    {user.name}
+                                    {user.fullName}
                                 </div>
                                 <div>
-                                    {user.status}
+                                    {/*{user.Status}*/}
                                 </div>
                             </span>
                             <span>
