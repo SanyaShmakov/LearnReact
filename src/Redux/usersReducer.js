@@ -1,9 +1,12 @@
+import {userAPI} from "../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING'
+const TOGGLE_FOLLOWING_PROGRESS = 'TOGGLE_FOLLOWING_PROGRESS'
 
 let initialState = {
     users: [],
@@ -11,6 +14,7 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
+    followingInProgress : [],
 }
 
 function usersReducer(state = initialState, action) {
@@ -61,26 +65,34 @@ function usersReducer(state = initialState, action) {
                 isFetching: action.isFetching
             }
         }
+        case TOGGLE_FOLLOWING_PROGRESS: {
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : [state.followingInProgress.filter(id => id !== action.userId)]
+            }
+        }
         default:
             return state;
     }
 }
 
-export function follow(userId) {
+function acceptFollow(userId) {
     return {
         type: FOLLOW,
         userId,
     }
 }
 
-export function unFollow(userId) {
+function acceptUnfollow(userId) {
     return {
         type: UNFOLLOW,
         userId,
     }
 }
 
-export function setUsers(users) {
+function setUsers(users) {
     return {
         type: SET_USERS,
         users,
@@ -94,17 +106,59 @@ export function setCurrentPage(selectedPage) {
     }
 }
 
-export function setTotalUsersCount(totalCount) {
+function setTotalUsersCount(totalCount) {
     return {
         type: SET_TOTAL_USERS_COUNT,
         totalCount,
     }
 }
 
-export function toggleIsFetching(isFetching) {
+function toggleIsFetching(isFetching) {
     return {
         type: TOGGLE_IS_FETCHING,
         isFetching,
+    }
+}
+function toggleFollowingProgress(isFetching, userId) {
+    return {
+        type:TOGGLE_FOLLOWING_PROGRESS,
+        isFetching,
+        userId,
+    }
+}
+
+export function getUsers(currentPage, pageSize) {
+    return (dispatch) => {
+        dispatch(toggleIsFetching(true))
+        userAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(setUsers(data.users));
+            dispatch(setTotalUsersCount(data.totalCount));
+            dispatch(toggleIsFetching(false));
+        });
+    }
+}
+
+export function follow(userId) {
+    return (dispatch) => {
+        dispatch(toggleFollowingProgress(true, userId));
+        userAPI.follow(userId).then(data => {
+            if (data.result) {
+                dispatch(acceptFollow(userId));
+            }
+            dispatch(toggleFollowingProgress(false, userId));
+        });
+    }
+}
+
+export function unfollow(userId) {
+    return (dispatch) => {
+        dispatch(toggleFollowingProgress(true, userId));
+        userAPI.unFollow(userId).then(data => {
+            if (data.result) {
+                dispatch(acceptUnfollow(userId));
+            }
+            dispatch(toggleFollowingProgress(false, userId));
+        });
     }
 }
 

@@ -2,7 +2,6 @@ import React from "react";
 import classes from './Users.module.css'
 import userImage from '../../assets/images/user.png'
 import {NavLink} from "react-router-dom";
-import * as axios from "axios";
 
 function Users(props) {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -47,22 +46,14 @@ function Users(props) {
                             </div>
                             <div>
                                 {user.followed
-                                    ? <button onClick={() => {
-                                        axios.delete(`https://localhost:5001/api/users/follow/${user.id}`,
-                                            {withCredentials: true}).then(response => {
-                                            if (response.data.result) {
-                                                props.unFollow(user.id);
-                                            }
-                                        });
-                                    }}>Отписаться</button>
-                                    : <button onClick={() => {
-                                        axios.post(`https://localhost:5001/api/users/follow/${user.id}`, {},
-                                            {withCredentials: true}).then(response => {
-                                            if (response.data.result) {
-                                                props.follow(user.id);
-                                            }
-                                        });
-                                    }}>Добавить в друзья</button>
+                                    ? <button disabled={props.followingInProgress.some(id => id === user.id)}
+                                              onClick={() => {
+                                                  props.unfollow(user.id);
+                                              }}>Отписаться</button>
+                                    : <button disabled={props.followingInProgress.some(id => id === user.id)}
+                                              onClick={() => {
+                                                  props.follow(user.id);
+                                              }}>Добавить в друзья</button>
                                 }
                             </div>
                         </span>
